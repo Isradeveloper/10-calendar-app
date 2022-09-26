@@ -42,3 +42,13 @@
 .btnmodal {
   width: 100%;
 }
+
+/* FABS */
+.fab {
+  border-radius: 100%;
+  bottom: 35px;
+  font-size: 20px;
+  padding: 20px;
+  position: fixed;
+  right: 35px;
+}
