@@ -1,15 +1,14 @@
 /* eslint-disable no-restricted-globals */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import { addHours, differenceInSeconds } from 'date-fns';
-import { useMemo, useState } from 'react';
-import Modal from 'react-modal';
-import DatePicker, { registerLocale } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import es from 'date-fns/locale/es';
-import Swal from 'sweetalert2';
-import 'sweetalert2/dist/sweetalert2.min.css';
+import { addHours, differenceInSeconds } from 'date-fns'
+import { useMemo, useState } from 'react'
+import Modal from 'react-modal'
+import DatePicker, { registerLocale } from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import es from 'date-fns/locale/es'
+import Swal from 'sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css'
 
-registerLocale('es', es);
+registerLocale('es', es)
 
 const customStyles = {
   content: {
@@ -18,148 +17,144 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
+    transform: 'translate(-50%, -50%)'
+  }
+}
 
-Modal.setAppElement('#root');
+Modal.setAppElement('#root')
 
-export function CalendarModal() {
-
-  const [isOpen, setisOpen] = useState(true);
-
+export function CalendarModal () {
   const [formValues, setFormValues] = useState({
     title: '',
     notes: 'adfdsgjggksgg',
     start: new Date(),
-    end: addHours(new Date(), 2),
-  });
+    end: addHours(new Date(), 2)
+  })
 
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false)
 
   const titleClass = useMemo(() => {
-    if (!formSubmitted) return '';
+    if (!formSubmitted) return ''
 
     return (formValues.title.length > 0)
       ? 'is-valid'
-      : 'is-invalid';
-
-  }, [formValues.title, formSubmitted]);
+      : 'is-invalid'
+  }, [formValues.title, formSubmitted])
 
   const onInputChange = ({ target }) => {
     setFormValues({
       ...formValues,
-      [target.name]: target.value,
-    });
-  };
+      [target.name]: target.value
+    })
+  }
 
   const onDateChanged = (event, changing) => {
     setFormValues({
       ...formValues,
-      [changing]: event,
-    });
-  };
+      [changing]: event
+    })
+  }
 
   const onCloseModal = () => {
-    console.log('cerrando modal');
-    setisOpen(false);
-  };
+    console.log('cerrando modal')
+    // setisOpen(false)
+  }
 
   const onSubmit = (event) => {
-    event.preventDefault();
-    setFormSubmitted(true);
+    event.preventDefault()
+    setFormSubmitted(true)
 
-    const diffence = differenceInSeconds(formValues.end, formValues.start);
+    const diffence = differenceInSeconds(formValues.end, formValues.start)
 
     if (isNaN(diffence) || diffence <= 0) {
-      Swal.fire('Fechas incorrectas', 'Revisar las fechas ingresadas', 'error');
-      return;
+      Swal.fire('Fechas incorrectas', 'Revisar las fechas ingresadas', 'error')
+      return
     }
 
-    if (formValues.title.length <= 0) return;
+    if (formValues.title.length <= 0) return
 
-    console.log(formValues);
+    console.log(formValues)
 
     // Cerrar modal
     // Remover errores en pantalla
-  };
+  }
 
   return (
     <Modal
-      isOpen={isOpen}
+      isOpen
       onRequestClose={onCloseModal}
       style={customStyles}
-      className="modal"
-      overlayClassName="modal-fondo"
+      className='modal'
+      overlayClassName='modal-fondo'
       closeTimeoutMS={200}
     >
       <h1> Nuevo evento </h1>
       <hr />
-      <form className="container" onSubmit={onSubmit}>
+      <form className='container' onSubmit={onSubmit}>
 
-        <div className="form-group mb-2">
+        <div className='form-group mb-2'>
           <label>Fecha y hora inicio</label>
           <DatePicker
             selected={formValues.start}
-            className="form-control"
+            className='form-control'
             onChange={(event) => onDateChanged(event, 'start')}
-            dateFormat="Pp"
+            dateFormat='Pp'
             showTimeSelect
-            locale="es"
-            timeCaption="Hora"
+            locale='es'
+            timeCaption='Hora'
           />
         </div>
 
-        <div className="form-group mb-2">
+        <div className='form-group mb-2'>
           <label>Fecha y hora fin</label>
           <DatePicker
             minDate={formValues.start}
             selected={formValues.end}
-            className="form-control"
+            className='form-control'
             onChange={(event) => onDateChanged(event, 'end')}
-            dateFormat="Pp"
+            dateFormat='Pp'
             showTimeSelect
-            locale="es"
-            timeCaption="Hora"
+            locale='es'
+            timeCaption='Hora'
           />
         </div>
 
         <hr />
-        <div className="form-group mb-2">
+        <div className='form-group mb-2'>
           <label>Titulo y notas</label>
           <input
-            type="text"
+            type='text'
             className={`form-control ${titleClass}`}
-            placeholder="Título del evento"
-            name="title"
-            autoComplete="off"
+            placeholder='Título del evento'
+            name='title'
+            autoComplete='off'
             value={formValues.title}
             onChange={onInputChange}
           />
-          <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
+          <small id='emailHelp' className='form-text text-muted'>Una descripción corta</small>
         </div>
 
-        <div className="form-group mb-2">
+        <div className='form-group mb-2'>
           <textarea
-            type="text"
-            className="form-control"
-            placeholder="Notas"
-            rows="5"
-            name="notes"
+            type='text'
+            className='form-control'
+            placeholder='Notas'
+            rows='5'
+            name='notes'
             value={formValues.notes}
             onChange={onInputChange}
           />
-          <small id="emailHelp" className="form-text text-muted">Información adicional</small>
+          <small id='emailHelp' className='form-text text-muted'>Información adicional</small>
         </div>
 
         <button
-          type="submit"
-          className="btn btn-outline-primary btn-block btnmodal"
+          type='submit'
+          className='btn btn-outline-primary btn-block btnmodal'
         >
-          <i className="far fa-save" />
+          <i className='far fa-save' />
           <span> Guardar</span>
         </button>
       </form>
     </Modal>
-  );
+  )
 }

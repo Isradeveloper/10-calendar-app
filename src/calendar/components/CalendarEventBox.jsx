@@ -1,6 +1,5 @@
-export function CalendarEventBox({ event }) {
-
-  const { title, user } = event;
+export function CalendarEventBox ({ event }) {
+  const { title, user } = event
 
   return (
     <>
@@ -8,5 +7,5 @@ export function CalendarEventBox({ event }) {
       <span> - {user.name}</span>
     </>
 
-  );
+  )
 }
