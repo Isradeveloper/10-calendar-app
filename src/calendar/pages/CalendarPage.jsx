@@ -1,11 +1,12 @@
-import { Calendar } from 'react-big-calendar';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { addHours } from 'date-fns';
-import { useState } from 'react';
-import { NavBar } from '../components/NavBar';
-import { localizer, getMessagesEs } from '../../helpers';
-import { CalendarEventBox } from '../components/CalendarEventBox';
-import { CalendarModal } from '../components/CalendarModal';
+import { Calendar } from 'react-big-calendar'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+import { addHours } from 'date-fns'
+import { useState } from 'react'
+import { NavBar } from '../components/NavBar'
+import { localizer, getMessagesEs } from '../../helpers'
+import { CalendarEventBox } from '../components/CalendarEventBox'
+import { CalendarModal } from '../components/CalendarModal'
+import { useUiStore } from '../../hooks/useUiStore'
 
 const events = [{
   title: 'Cumpleaños del jefe',
@@ -15,56 +16,56 @@ const events = [{
   bgColor: '#fafafa',
   user: {
     _id: '123',
-    name: 'Fernando',
-  },
-}];
+    name: 'Fernando'
+  }
+}]
 
-export function CalendarPage() {
+export function CalendarPage () {
+  const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
 
-  const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week');
+  const { openDateModal } = useUiStore()
 
   const eventStyleGetter = (event, start, isSelected) => {
-
     const style = {
       backgroundColor: '#347CF7',
       borderRadius: '0px',
       opacity: 0.8,
-      color: 'white',
-    };
+      color: 'white'
+    }
 
     return {
-      style,
-    };
-  };
+      style
+    }
+  }
 
   const onDoubleClick = (event) => {
-    console.log({ doubleClick: event });
-  };
+    openDateModal()
+  }
 
   const onSelect = (event) => {
-    console.log({ click: event });
-  };
+    console.log({ click: event })
+  }
 
   const onViewChanged = (event) => {
-    localStorage.setItem('lastView', event);
-  };
+    localStorage.setItem('lastView', event)
+  }
 
   return (
     <>
       <NavBar />
 
       <Calendar
-        culture="es"
+        culture='es'
         localizer={localizer}
         events={events}
         defaultView={lastView}
-        startAccessor="start"
-        endAccessor="end"
+        startAccessor='start'
+        endAccessor='end'
         style={{ height: 'calc( 100vh - 80px )' }}
         messages={getMessagesEs()}
         eventPropGetter={eventStyleGetter}
         components={{
-          event: CalendarEventBox,
+          event: CalendarEventBox
         }}
         onDoubleClickEvent={onDoubleClick}
         onSelectEvent={onSelect}
@@ -74,5 +75,5 @@ export function CalendarPage() {
       <CalendarModal />
     </>
 
-  );
+  )
 }
