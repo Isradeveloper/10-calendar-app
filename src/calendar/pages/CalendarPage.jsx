@@ -4,9 +4,10 @@ import { useState } from 'react'
 import { localizer, getMessagesEs } from '../../helpers'
 import { useUiStore, useCalendarStore } from '../../hooks'
 import { CalendarEventBox, CalendarModal, NavBar, FabAddNew } from '../components'
+import { FabDelete } from '../components/FabDelete'
 
 export function CalendarPage () {
-  const { events, setActiveEvent } = useCalendarStore()
+  const { events, setActiveEvent, hasEventSelected } = useCalendarStore()
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
 
   const { openDateModal } = useUiStore()
@@ -58,7 +59,15 @@ export function CalendarPage () {
         onView={onViewChanged}
       />
 
+      {/* <FabAddNew />
+      {
+        (hasEventSelected)
+          ? <FabDelete />
+          : ''
+      } */}
+
       <FabAddNew />
+      <FabDelete />
 
       <CalendarModal />
     </>
