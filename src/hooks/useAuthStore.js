@@ -42,7 +42,7 @@ export const useAuthStore = () => {
     }
   }
 
-  const checkAuthToken = async () => {
+  const checkAuthToken = async () => { // Si el token no existe, logout. Si existe, se manda el renew del backend
     const token = localStorage.getItem('token')
     if (!token) return dispatch(onLogout())
 
