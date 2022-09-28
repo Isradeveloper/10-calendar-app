@@ -16,7 +16,7 @@ const registerFormFields = {
 }
 
 export function LoginPage () {
-  const { startLogin, errorMessage } = useAuthStore()
+  const { startLogin, errorMessage, startRegister } = useAuthStore()
 
   const { loginEmail, loginPassword, onInputChange: onLoginInputChange } = useForm(loginFormFields)
   const { registerName, registerEmail, registerPassword, registerPassword2, onInputChange: onRegisterInputChange } = useForm(registerFormFields)
@@ -30,7 +30,9 @@ export function LoginPage () {
     event.preventDefault()
     if (registerPassword !== registerPassword2) {
       Swal.fire('Error en el registro', 'Contraseñas no son iguales', 'error')
+      return
     }
+    startRegister({ name: registerName, email: registerEmail, password: registerPassword })
     console.log({ registerName, registerEmail, registerPassword, registerPassword2 })
   }
 
