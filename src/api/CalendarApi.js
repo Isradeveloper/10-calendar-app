@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 const calendarApi = axios.create({
-  baseURL: 'https://mern-calendar-israel-trujillo.herokuapp.com/api'
+  baseURL: import.meta.env.VITE_BACKEND_URL
 })
 
 // Todo: configurar interceptores
