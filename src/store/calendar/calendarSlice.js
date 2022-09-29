@@ -32,8 +32,8 @@ export const calendarSlice = createSlice({
       state.activeEvent = null
     },
     onUpdateEvent: (state, { payload }) => {
-      state.events = state.events.map((event) => {
-        if (event._id === payload._id) {
+      state.events = state.events.map(event => {
+        if (event.id === payload.id) {
           return payload
         }
 
@@ -42,22 +42,34 @@ export const calendarSlice = createSlice({
     },
     onDeleteEvent: (state) => {
       if (state.activeEvent) {
-        state.events = state.events.filter((event) => (event._id !== state.activeEvent._id))
+        state.events = state.events.filter(event => event.id !== state.activeEvent.id)
         state.activeEvent = null
       }
     },
-    onLoadsEvents: (state, { payload = [] }) => {
+    onLoadEvents: (state, { payload = [] }) => {
       state.isLoadingEvents = false
-      // state.events = payload
+      // state.events = payload;
       payload.forEach(event => {
-        const exist = state.events.some(dbEvent => dbEvent.id === event.id) // Si existe en el state returna true
-        if (!exist) {
+        const exists = state.events.some(dbEvent => dbEvent.id === event.id)
+        if (!exists) {
           state.events.push(event)
         }
       })
+    },
+    onLogoutCalendar: (state) => {
+      state.activeEvent = null
+      state.events = []
+      state.isLoadingEvents = true
     }
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { onSetActiveEvent, onAddNewEvent, onUpdateEvent, onDeleteEvent, onLoadsEvents } = calendarSlice.actions
+export const {
+  onSetActiveEvent,
+  onAddNewEvent,
+  onUpdateEvent,
+  onDeleteEvent,
+  onLoadEvents,
+  onLogoutCalendar
+} = calendarSlice.actions

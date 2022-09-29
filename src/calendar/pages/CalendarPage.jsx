@@ -1,20 +1,24 @@
+import { useEffect, useState } from 'react'
 import { Calendar } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { useEffect, useState } from 'react'
-import { localizer, getMessagesEs } from '../../helpers'
-import { useUiStore, useCalendarStore } from '../../hooks'
-import { CalendarEventBox, CalendarModal, NavBar, FabAddNew } from '../components'
-import { FabDelete } from '../components/FabDelete'
 
-export function CalendarPage () {
-  const { events, setActiveEvent, hasEventSelected, startLoadingEvents } = useCalendarStore()
+import { NavBar, CalendarEventBox, FabAddNew, FabDelete, CalendarModal } from '../components'
+
+import { localizer, getMessagesEs } from '../../helpers'
+import { useUiStore, useCalendarStore, useAuthStore } from '../../hooks'
+
+export const CalendarPage = () => {
+  const { user } = useAuthStore()
+  const { openDateModal } = useUiStore()
+  const { events, setActiveEvent, startLoadingEvents } = useCalendarStore()
+
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'week')
 
-  const { openDateModal } = useUiStore()
+  const eventStyleGetter = (event, start, end, isSelected) => {
+    const isMyEvent = (user.uid === event.user._id) || (user.uid === event.user.uid)
 
-  const eventStyleGetter = (event, start, isSelected) => {
     const style = {
-      backgroundColor: '#4A0DD8',
+      backgroundColor: isMyEvent ? '#4A0DD8' : '#465660',
       borderRadius: '0px',
       opacity: 0.8,
       color: 'white'
@@ -26,15 +30,18 @@ export function CalendarPage () {
   }
 
   const onDoubleClick = (event) => {
+    // console.log({ doubleClick: event });
     openDateModal()
   }
 
   const onSelect = (event) => {
+    // console.log({ click: event });
     setActiveEvent(event)
   }
 
   const onViewChanged = (event) => {
     localStorage.setItem('lastView', event)
+    setLastView(event)
   }
 
   useEffect(() => {
@@ -63,18 +70,11 @@ export function CalendarPage () {
         onView={onViewChanged}
       />
 
-      {/* <FabAddNew />
-      {
-        (hasEventSelected)
-          ? <FabDelete />
-          : ''
-      } */}
+      <CalendarModal />
 
       <FabAddNew />
       <FabDelete />
 
-      <CalendarModal />
     </>
-
   )
 }

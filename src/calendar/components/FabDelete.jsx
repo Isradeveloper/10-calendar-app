@@ -9,7 +9,7 @@ export const FabDelete = () => {
   }
 
   return (
-    <button className='btn btn-danger fab-danger' onClick={(e) => { handleDelete() }} style={{ display: (hasEventSelected && isDateModalOpen) ? '' : 'none' }}>
+    <button className='btn btn-danger fab-danger' onClick={(e) => { handleDelete() }} style={{ display: (hasEventSelected && !isDateModalOpen) ? '' : 'none' }}>
       <i className='fas fa-trash-alt' />
     </button>
   )
